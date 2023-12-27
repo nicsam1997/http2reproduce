@@ -1,10 +1,12 @@
 #!/bin/bash
+echo "Build programs"
+mvn -f http2client/pom.xml clean install
+mvn -f http2server/pom.xml clean install
+
 echo "Start client program"
 mvn -f http2client/pom.xml --quiet clean spring-boot:run > client.log &
 echo "Start server program"
 mvn -f http2server/pom.xml --quiet clean spring-boot:run > server.log &
-jobs
-
 
 echo "Sleep 10 seconds, this might have to be adjusted"
 sleep 10
