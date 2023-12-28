@@ -22,10 +22,6 @@ connection2=$(echo "${connections}" | awk 'NR==2 {print $5}')
 port1=${connection1##*:}
 port2=${connection2##*:}
 port=0
-echo "${connection2}"
-echo "${connection1}"
-echo "${port1}"
-echo "${port2}"
 
 if [[ ${port1} == 8082 ]] 
 then

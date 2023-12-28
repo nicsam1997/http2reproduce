@@ -16,8 +16,19 @@ response1=$(curl -s http://localhost:8080/hello)
 echo "Response: ${response1}"
 echo -e "\nShow active tcp connection"
 netstat -anp tcp | grep 127.0.0.1.8082
-connection=$(netstat -anp tcp | grep 127.0.0.1.8082 | awk 'NR==1 {print $5}')
-port=${connection##*.}
+connections=$(netstat -anp tcp | grep 127.0.0.1.8082)
+connection1=$(echo "${connections}" | awk 'NR==1 {print $5}')
+connection2=$(echo "${connections}" | awk 'NR==2 {print $5}')
+port1=${connection1##*:}
+port2=${connection2##*:}
+port=0
+
+if [[ ${port1} == 8082 ]]
+then
+        port=${port2}
+else
+        port=${port1}
+fi
 
 echo "Setup a firewall rule to block the connection on ${port}"
 echo "block drop in proto tcp from any to any port ${port}" | sudo pfctl -ef -
