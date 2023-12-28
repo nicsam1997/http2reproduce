@@ -1,5 +1,6 @@
 package com.example.http2client;
 
+import io.netty.channel.epoll.EpollChannelOption;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,6 +9,7 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
+
 
 import java.time.Duration;
 
@@ -33,7 +35,8 @@ public class SimpleController {
                 HttpClient.create(connectionProvider)
                         .protocol(HttpProtocol.H2C)
                         .responseTimeout(Duration.ofSeconds(4))
-                        .option(CONNECT_TIMEOUT_MILLIS, 50);
+                        .option(CONNECT_TIMEOUT_MILLIS, 50)
+                        .option(EpollChannelOption.TCP_USER_TIMEOUT, 3000);
         httpClient.warmup().block();
         return clientBuilder.clientConnector(new ReactorClientHttpConnector(httpClient)).build();
     }
