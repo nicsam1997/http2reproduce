@@ -19,8 +19,8 @@ netstat -anp tcp | grep 127.0.0.1.8082
 connections=$(netstat -anp tcp | grep 127.0.0.1.8082)
 connection1=$(echo "${connections}" | awk 'NR==1 {print $5}')
 connection2=$(echo "${connections}" | awk 'NR==2 {print $5}')
-port1=${connection1##*:}
-port2=${connection2##*:}
+port1=${connection1##*.}
+port2=${connection2##*.}
 port=0
 
 if [[ ${port1} == 8082 ]]
